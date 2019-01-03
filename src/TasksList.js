@@ -9,6 +9,12 @@ const Li = styled.li`
   padding: 5px;
   border: 1px solid #ccc;
   color: #333;
+  display: flex;
+  justify-content: space-between;
+
+  span:hover {
+    cursor: pointer;
+  }
 `;
 
 const Ul = styled.ul`
@@ -18,7 +24,12 @@ const Ul = styled.ul`
 
 const Tasks = props => {
   return props.list.map(item => {
-    return <Li key={item.id}>{item.title}</Li>;
+    return (
+      <Li key={item.id}>
+        {item.title}
+        <span onClick={props.deleteTask.bind(null, item.id)}>Delete</span>
+      </Li>
+    );
   });
 };
 
@@ -30,11 +41,16 @@ function TasksList() {
     setTasks(list);
   };
 
+  const deleteTask = id => {
+    dataManager.delete('tasks', id);
+    updateTasks();
+  };
+
   return (
     <div>
       <AddTask updateTasks={updateTasks} />
       <Ul>
-        <Tasks list={tasks} />
+        <Tasks deleteTask={deleteTask} list={tasks} />
       </Ul>
     </div>
   );

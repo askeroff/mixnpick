@@ -6,7 +6,6 @@ const Div = styled.div`
   display: grid;
   grid-template-columns: 2fr 1fr;
   margin-top: 5px;
-  
 `;
 
 const Input = styled.input`

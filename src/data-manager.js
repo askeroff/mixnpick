@@ -9,8 +9,9 @@ class DataManager {
     localStorage.setItem(key, JSON.stringify(data));
   }
 
-  delete(index) {
-    // ! to implement
+  delete(key, id) {
+    const data = this.get(key).filter(item => item.id !== id);
+    localStorage.setItem(key, JSON.stringify(data));
   }
 }
 const dataManager = new DataManager();
