@@ -1,23 +1,32 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { render } from 'react-dom';
 import Header from './Header';
 import TasksList from './TasksList';
+import SingleTask from './SingleTask';
 import styled from 'styled-components';
 
 const MyDiv = styled.div`
   max-width: 640px;
   margin: 20px auto;
-  border: 2px solid #ccc;
   border-radius: 10px;
   padding: 10px;
 `;
 
-const App = () => (
-  <MyDiv>
-    <Header />
-    <TasksList />
-  </MyDiv>
-);
+function App() {
+  const [page, setPage] = useState('list');
+  const [task, setTask] = useState(null);
+
+  return (
+    <MyDiv>
+      <Header setTask={setTask} setPage={setPage} page={page} />
+      {page === 'list' ? (
+        <TasksList setPage={setPage} page={page} />
+      ) : (
+        <SingleTask task={task} />
+      )}
+    </MyDiv>
+  );
+}
 
 render(<App />, document.getElementById('app'));
 

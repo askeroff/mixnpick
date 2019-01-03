@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import dataManager from './data-manager';
 
 const Heading = styled.h1`
   text-align: center;
@@ -25,19 +26,39 @@ const Button = styled.button`
   }
 `;
 
-const Header = () => {
+function generateRandomNumber(min, max) {
+  let random_number = Math.random() * (max - min) + min;
+  return Math.floor(random_number);
+}
+
+function Header(props) {
+  const pickATask = () => {
+    const data = dataManager.get('tasks');
+    const nextElem = data[generateRandomNumber(0, data.length)];
+    props.setTask(nextElem);
+    props.setPage('single');
+  };
+
   return (
     <header>
       <Heading>Guitar Pick N Mix</Heading>
       <ButtonGroup>
-        <Button color="#fafafa" bg="#47c87f">
+        <Button onClick={pickATask} color="#fafafa" bg="#47c87f">
           Pick a task
         </Button>
-        <Button color="#fafafa" bg="#aa652c">List of tasks</Button>
-        <Button color="#fafafa" bg="#b81313">Reset Tasks State</Button>
+        <Button
+          onClick={() => props.setPage('list')}
+          color="#fafafa"
+          bg="#aa652c"
+        >
+          List of tasks
+        </Button>
+        <Button color="#fafafa" bg="#b81313">
+          Reset Tasks State
+        </Button>
       </ButtonGroup>
     </header>
   );
-};
+}
 
 export default Header;
