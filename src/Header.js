@@ -12,6 +12,16 @@ const ButtonGroup = styled.div`
   grid-template-columns: 1fr 1fr 1fr;
 `;
 
+const About = styled.span`
+  font-size: 16px;
+  color: #42a3c7;
+  font-style: italic;
+  padding-left: 10px;
+  :hover {
+    cursor: pointer;
+  }
+`;
+
 const Button = styled.button`
   border: 1px solid #fafafa;
   color: ${props => props.color || '#333'};
@@ -47,10 +57,17 @@ function Header(props) {
     dataManager.set('tasks', data);
     props.updateTasks();
   };
+  
+  const showAbout = () => {
+    props.setPage('about');
+  }
 
   return (
     <header>
-      <Heading>Guitar Pick N Mix</Heading>
+      <Heading>
+        Guitar Pick N Mix
+        <About title="About The App" onClick={showAbout}>(?)</About>
+      </Heading>
       <ButtonGroup>
         <Button onClick={pickATask} color="#fafafa" bg="#47c87f">
           Pick a task

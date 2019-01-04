@@ -6,7 +6,7 @@ import styled from 'styled-components';
 const Li = styled.li`
   list-style: none;
   margin: 10px 0;
-  padding: 5px;
+  padding: 10px;
   border: 1px solid #ccc;
   color: #333;
   display: flex;

@@ -5,6 +5,7 @@ import TasksList from './TasksList';
 import SingleTask from './SingleTask';
 import styled, { createGlobalStyle } from 'styled-components';
 import dataManager from './data-manager';
+import About from './About';
 
 const GlobalStyles = createGlobalStyle`
   body {
@@ -34,6 +35,23 @@ function App() {
     setTasks(list);
   };
 
+  const showPage = page => {
+    if (page === 'list') {
+      return (
+        <TasksList
+          tasks={tasks}
+          updateTasks={updateTasks}
+          setPage={setPage}
+          page={page}
+        />
+      );
+    } else if (page === 'single') {
+      return <SingleTask task={task} />;
+    } else if (page === 'about') {
+      return <About />;
+    }
+  };
+
   useEffect(
     () => {
       updateTasks();
@@ -50,16 +68,7 @@ function App() {
         setPage={setPage}
         page={page}
       />
-      {page === 'list' ? (
-        <TasksList
-          tasks={tasks}
-          updateTasks={updateTasks}
-          setPage={setPage}
-          page={page}
-        />
-      ) : (
-        <SingleTask task={task} />
-      )}
+      {showPage(page)}
     </MyDiv>
   );
 }
