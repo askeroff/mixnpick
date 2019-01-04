@@ -7,6 +7,16 @@ const Div = styled.div`
   background: #fff;
   border: 1px solid #ededed;
   margin-top: 10px;
+
+  a {
+    color: #42a3c7;
+    text-decoration: none;
+    border-bottom: 1px solid #42a3c7;
+  }
+
+  a:hover {
+    border: none;
+  }
 `;
 
 function About() {
@@ -40,6 +50,10 @@ function About() {
       <p>
         And at last, after all the tasks are done you can reset their state and
         start your new practice session.
+      </p>
+
+      <p>
+        Built by <a href="https://twitter.com/askerovlab">Javid Askerov</a>.
       </p>
     </Div>
   );

@@ -12,7 +12,7 @@ module.exports = {
   },
   plugins: [
     new CleanWebpackPlugin(['build'], {
-      exclude: ['template.html'],
+      exclude: ['favicon.png'],
       watch: true
     }),
     new HtmlWebpackPlugin({
@@ -20,7 +20,15 @@ module.exports = {
       template: require('html-webpack-template'),
       appMountId: 'app',
       mobile: true,
-      title: 'Guitar Mix n Pick'
+      title: 'Guitar Mix n Pick',
+      links: [
+        {
+          href: '/favicon.png',
+          rel: 'icon',
+          sizes: '48x48',
+          type: 'image/png'
+        }
+      ]
     })
   ],
   resolve: {
