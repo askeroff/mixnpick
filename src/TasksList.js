@@ -11,7 +11,7 @@ const Li = styled.li`
   color: #333;
   display: flex;
   justify-content: space-between;
-
+  background: ${props => (props.done ? '#47c87f' : '#fff')};
   span:hover {
     cursor: pointer;
   }
@@ -24,10 +24,18 @@ const Ul = styled.ul`
 
 const Tasks = props => {
   return props.list.map(item => {
+    const holdString = item.state === 'onhold' ? 'To Do' : 'On Hold';
     return (
-      <Li key={item.id}>
+      <Li done={item.state === 'done'} key={item.id}>
         {item.title}
-        <span onClick={props.deleteTask.bind(null, item.id)}>Delete</span>
+        <div>
+          {item.state !== 'done' ? (
+            <span onClick={props.toggleHold.bind(null, item.id, props.list)}>
+              {holdString} | {" "}
+            </span>
+          ) : null}
+          <span onClick={props.deleteTask.bind(null, item.id)}>Delete</span>
+        </div>
       </Li>
     );
   });
@@ -46,11 +54,22 @@ function TasksList() {
     updateTasks();
   };
 
+  const toggleHold = (id, tasks) => {
+    const found = tasks.find(item => item.id === id);
+    if (found && found.state !== 'onhold') {
+      found.state = 'onhold';
+    } else if (found && found.state === 'onhold') {
+      found.state = 'todo';
+    }
+    dataManager.update('tasks', id, found);
+    updateTasks();
+  };
+
   return (
     <div>
       <AddTask updateTasks={updateTasks} />
       <Ul>
-        <Tasks deleteTask={deleteTask} list={tasks} />
+        <Tasks toggleHold={toggleHold} deleteTask={deleteTask} list={tasks} />
       </Ul>
     </div>
   );
