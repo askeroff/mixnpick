@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 
 const Button = styled.button`
@@ -76,6 +76,15 @@ function Timer() {
       return { ...prevState, seconds: getSecondsDiff(prevState.started) };
     });
   };
+
+  useEffect(() => {
+    const left = howMuchLeft(timer.seconds, minutes);
+    if (left < 1) {
+      clearInterval(timer.id);
+      setTimer(timer => ({ ...timer, id: null, seconds: 0 }));
+      return;
+    }
+  });
 
   const start = () => {
     if (!timer.id) {
