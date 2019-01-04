@@ -23,7 +23,7 @@ module.exports = {
       title: 'Guitar Mix n Pick',
       links: [
         {
-          href: '/favicon.png',
+          href: 'favicon.png',
           rel: 'icon',
           sizes: '48x48',
           type: 'image/png'
