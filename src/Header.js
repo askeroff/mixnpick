@@ -35,8 +35,12 @@ function Header(props) {
   const pickATask = () => {
     const data = dataManager.get('tasks');
     const nextElem = data[generateRandomNumber(0, data.length)];
-    props.setTask(nextElem);
-    props.setPage('single');
+    if (nextElem) {
+      props.setTask(nextElem);
+      props.setPage('single');
+    } else {
+      console.log('NEXTELEM NOT DEFINED', nextElem);
+    }
   };
 
   return (
