@@ -33,7 +33,7 @@ function generateRandomNumber(min, max) {
 
 function Header(props) {
   const pickATask = () => {
-    const data = dataManager.get('tasks').filter(item => item.state !== 'done');
+    const data = dataManager.get('tasks').filter(item => item.state === 'todo');
     const nextElem = data[generateRandomNumber(0, data.length)];
 
     props.setTask(nextElem);

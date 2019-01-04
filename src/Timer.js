@@ -106,15 +106,18 @@ function Timer(props) {
     setTimer(timer => ({ ...timer, id: null, seconds: 0 }));
   };
 
+  const changeMinutes = e => {
+    const value = e.currentTarget.value;
+    if (+value >= 1) {
+      setMinutes(value);
+    }
+  };
+
   return (
     <MainDiv>
       <Button onClick={start}>Start!</Button>
       <Button onClick={stop}>Stop</Button>
-      <Input
-        type="text"
-        value={minutes}
-        onChange={e => setMinutes(e.currentTarget.value)}
-      />
+      <Input type="number" value={minutes} onChange={changeMinutes} />
       <Title>{formatForTimer(howMuchLeft(timer.seconds, minutes))}</Title>
     </MainDiv>
   );
