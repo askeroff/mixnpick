@@ -11,7 +11,11 @@ const Li = styled.li`
   color: #333;
   display: flex;
   justify-content: space-between;
-  background: ${props => (props.done ? '#47c87f' : '#fff')};
+  background: ${props => {
+    if (props.state === 'onhold') return '#ccc';
+    if (props.state === 'done') return '#47c87f';
+    return '#fff';
+  }};
   span:hover {
     cursor: pointer;
   }
@@ -24,16 +28,15 @@ const Ul = styled.ul`
 
 const Tasks = props => {
   return props.list.map(item => {
-    const holdString = item.state === 'onhold' ? 'To Do' : 'On Hold';
+    const holdString =
+      item.state === 'onhold' || item.state === 'done' ? 'To Do' : 'On Hold';
     return (
-      <Li done={item.state === 'done'} key={item.id}>
+      <Li state={item.state} key={item.id}>
         {item.title}
         <div>
-          {item.state !== 'done' ? (
-            <span onClick={props.toggleHold.bind(null, item.id, props.list)}>
-              {holdString} | {" "}
-            </span>
-          ) : null}
+          <span onClick={props.toggleHold.bind(null, item.id, props.list)}>
+            {holdString} |{' '}
+          </span>
           <span onClick={props.deleteTask.bind(null, item.id)}>Delete</span>
         </div>
       </Li>
@@ -41,35 +44,32 @@ const Tasks = props => {
   });
 };
 
-function TasksList() {
-  const [tasks, setTasks] = useState(dataManager.get('tasks'));
-
-  const updateTasks = () => {
-    const list = dataManager.get('tasks');
-    setTasks(list);
-  };
-
+function TasksList(props) {
   const deleteTask = id => {
     dataManager.delete('tasks', id);
-    updateTasks();
+    props.updateTasks();
   };
 
   const toggleHold = (id, tasks) => {
     const found = tasks.find(item => item.id === id);
-    if (found && found.state !== 'onhold') {
-      found.state = 'onhold';
-    } else if (found && found.state === 'onhold') {
+    if (found && (found.state === 'onhold' || found.state === 'done')) {
       found.state = 'todo';
+    } else {
+      found.state = 'onhold';
     }
     dataManager.update('tasks', id, found);
-    updateTasks();
+    props.updateTasks();
   };
 
   return (
     <div>
-      <AddTask updateTasks={updateTasks} />
+      <AddTask updateTasks={props.updateTasks} />
       <Ul>
-        <Tasks toggleHold={toggleHold} deleteTask={deleteTask} list={tasks} />
+        <Tasks
+          toggleHold={toggleHold}
+          deleteTask={deleteTask}
+          list={props.tasks}
+        />
       </Ul>
     </div>
   );

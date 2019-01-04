@@ -3,7 +3,19 @@ import { render } from 'react-dom';
 import Header from './Header';
 import TasksList from './TasksList';
 import SingleTask from './SingleTask';
-import styled from 'styled-components';
+import styled, { createGlobalStyle } from 'styled-components';
+import dataManager from './data-manager';
+
+const GlobalStyles = createGlobalStyle`
+  body {
+    @import url('https://fonts.googleapis.com/css?family=Arimo');
+    font-family: 'Arimo', sans-serif;
+    background: rgb(223, 231, 239);
+    font-size: 16px;
+    line-height: 1.2em;
+    color: #333;
+  }
+`;
 
 const MyDiv = styled.div`
   max-width: 640px;
@@ -15,12 +27,29 @@ const MyDiv = styled.div`
 function App() {
   const [page, setPage] = useState('list');
   const [task, setTask] = useState(null);
+  const [tasks, setTasks] = useState(dataManager.get('tasks'));
+
+  const updateTasks = () => {
+    const list = dataManager.get('tasks');
+    setTasks(list);
+  };
 
   return (
     <MyDiv>
-      <Header setTask={setTask} setPage={setPage} page={page} />
+      <GlobalStyles />
+      <Header
+        updateTasks={updateTasks}
+        setTask={setTask}
+        setPage={setPage}
+        page={page}
+      />
       {page === 'list' ? (
-        <TasksList setPage={setPage} page={page} />
+        <TasksList
+          tasks={tasks}
+          updateTasks={updateTasks}
+          setPage={setPage}
+          page={page}
+        />
       ) : (
         <SingleTask task={task} />
       )}
@@ -30,12 +59,3 @@ function App() {
 
 render(<App />, document.getElementById('app'));
 
-/*
-  ? ToDo Section that has a list of tasks
-  ? Done List that has a list of done tasks
-  ? We need a timer
-  ? Need to randomly pick a task
-  ? After time gone off put that task into done list
-  ? Reset button to make all tasks undone
-  ? Delete button
-*/

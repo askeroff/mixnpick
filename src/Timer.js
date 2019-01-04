@@ -34,7 +34,7 @@ const MainDiv = styled.div`
 
 export const Title = styled.h2`
   text-align: center;
-  color: #333;
+  color: ${props => (props.done ? '#47c87f' : '#333')};
   grid-column: 1/-1;
 `;
 
@@ -72,6 +72,8 @@ function Timer(props) {
 
   const [minutes, setMinutes] = useState(5);
 
+  const [finished, setFinished] = useState(false);
+
   const incrementSeconds = () => {
     setTimer(prevState => {
       return { ...prevState, seconds: getSecondsDiff(prevState.started) };
@@ -85,14 +87,23 @@ function Timer(props) {
       setTimer(timer => ({ ...timer, id: null, seconds: 0 }));
       const done = { ...props.task, state: 'done' };
       dataManager.update('tasks', props.task.id, done);
+      setFinished(true);
       return;
     }
   });
+
+  useEffect(
+    () => {
+      setFinished(false);
+    },
+    [props.task]
+  );
 
   const start = () => {
     if (!timer.id) {
       const started = new Date().getTime();
       const id = setInterval(incrementSeconds, 1000);
+      setFinished(false);
       setTimer(() => ({
         id,
         seconds: 0,
@@ -115,10 +126,18 @@ function Timer(props) {
 
   return (
     <MainDiv>
-      <Button onClick={start}>Start!</Button>
-      <Button onClick={stop}>Stop</Button>
+      <Button disabled={finished} onClick={start}>
+        Start!
+      </Button>
+      <Button disabled={finished} onClick={stop}>
+        Stop
+      </Button>
       <Input type="number" value={minutes} onChange={changeMinutes} />
-      <Title>{formatForTimer(howMuchLeft(timer.seconds, minutes))}</Title>
+      <Title done={finished}>
+        {finished
+          ? 'Done'
+          : formatForTimer(howMuchLeft(timer.seconds, minutes))}
+      </Title>
     </MainDiv>
   );
 }

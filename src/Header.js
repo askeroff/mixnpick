@@ -45,6 +45,7 @@ function Header(props) {
       .get('tasks')
       .map(item => ({ ...item, state: 'todo' }));
     dataManager.set('tasks', data);
+    props.updateTasks();
   };
 
   return (
@@ -57,7 +58,7 @@ function Header(props) {
         <Button
           onClick={() => props.setPage('list')}
           color="#fafafa"
-          bg="#aa652c"
+          bg="#42a3c7"
         >
           List of tasks
         </Button>
