@@ -8,18 +8,33 @@ const Div = styled.div`
   margin-top: 10px;
 `;
 
-export const Title = styled.h2`
+const Title = styled.h2`
   text-align: center;
   color: #333;
 `;
 
+const Description = styled.p`
+  padding: 10px;
+  color: #333;
+`;
+
 function SingleTask(props) {
-  // TODO: why it comes here as null
-  if (!props.task) return null;
+  if (!props.task) {
+    return (
+      <Div>
+        <Title>Nothing Left</Title>
+        <Description>
+          Either all tasks are done, or there are none. If all are done, you can
+          reset the the state with the button above. If none were added you can
+          add some.
+        </Description>
+      </Div>
+    );
+  }
   return (
     <Div>
       <Title>{props.task.title}</Title>
-      <Timer />
+      <Timer task={props.task} />
     </Div>
   );
 }

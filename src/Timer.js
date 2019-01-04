@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
+import dataManager from './data-manager';
 
 const Button = styled.button`
   background: #fafafa;
@@ -62,7 +63,7 @@ function formatForTimer(number) {
   return time;
 }
 
-function Timer() {
+function Timer(props) {
   const [timer, setTimer] = useState({
     id: null,
     seconds: 0,
@@ -82,6 +83,8 @@ function Timer() {
     if (left < 1) {
       clearInterval(timer.id);
       setTimer(timer => ({ ...timer, id: null, seconds: 0 }));
+      const done = { ...props.task, state: 'done' };
+      dataManager.update('tasks', props.task.id, done);
       return;
     }
   });

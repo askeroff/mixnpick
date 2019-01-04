@@ -33,14 +33,18 @@ function generateRandomNumber(min, max) {
 
 function Header(props) {
   const pickATask = () => {
-    const data = dataManager.get('tasks');
+    const data = dataManager.get('tasks').filter(item => item.state !== 'done');
     const nextElem = data[generateRandomNumber(0, data.length)];
-    if (nextElem) {
-      props.setTask(nextElem);
-      props.setPage('single');
-    } else {
-      console.log('NEXTELEM NOT DEFINED', nextElem);
-    }
+
+    props.setTask(nextElem);
+    props.setPage('single');
+  };
+
+  const reset = () => {
+    const data = dataManager
+      .get('tasks')
+      .map(item => ({ ...item, state: 'todo' }));
+    dataManager.set('tasks', data);
   };
 
   return (
@@ -57,7 +61,7 @@ function Header(props) {
         >
           List of tasks
         </Button>
-        <Button color="#fafafa" bg="#b81313">
+        <Button onClick={reset} color="#fafafa" bg="#b81313">
           Reset Tasks State
         </Button>
       </ButtonGroup>
