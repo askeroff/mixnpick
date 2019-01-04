@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { render } from 'react-dom';
 import Header from './Header';
 import TasksList from './TasksList';
@@ -34,6 +34,13 @@ function App() {
     setTasks(list);
   };
 
+  useEffect(
+    () => {
+      updateTasks();
+    },
+    [page]
+  );
+
   return (
     <MyDiv>
       <GlobalStyles />
@@ -58,4 +65,3 @@ function App() {
 }
 
 render(<App />, document.getElementById('app'));
-
